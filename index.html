@@ -17,11 +17,9 @@
     --dusk:      #1a2015;
     --glow:      #e8c97a;
     --ink:       #1c1a14;
-    --mist:      rgba(200,196,176,0.08);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -33,7 +31,6 @@
     line-height: 1.7;
   }
 
-  /* ── NOISE OVERLAY ── */
   body::before {
     content: '';
     position: fixed;
@@ -44,506 +41,280 @@
     opacity: 0.5;
   }
 
-  /* ── HERO ── */
-  .hero {
+  /* ═══════════════════════════════════
+     IMAGE FRAMES
+  ═══════════════════════════════════ */
+  .img-frame {
     position: relative;
-    min-height: 100vh;
+    background: rgba(255,255,255,0.022);
+    border: 1px solid rgba(107,124,77,0.32);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* corner bracket top-left */
+  .img-frame::before {
+    content: '';
+    position: absolute;
+    top: 9px; left: 9px;
+    width: 18px; height: 18px;
+    border-top: 1px solid var(--amber);
+    border-left: 1px solid var(--amber);
+    opacity: 0.55;
+    z-index: 2;
+    pointer-events: none;
+  }
+  /* corner bracket bottom-right */
+  .img-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 9px; right: 9px;
+    width: 18px; height: 18px;
+    border-bottom: 1px solid var(--amber);
+    border-right: 1px solid var(--amber);
+    opacity: 0.55;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .img-frame-inner {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.8rem;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .img-frame-icon { opacity: 0.16; }
+
+  .img-frame-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lichen);
+    line-height: 1.7;
+    opacity: 0.8;
+  }
+
+  .img-frame-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.45rem 1rem;
+    background: rgba(20,26,16,0.82);
+    font-size: 0.7rem;
+    font-style: italic;
+    color: var(--lichen);
+    letter-spacing: 0.04em;
+    border-top: 1px solid rgba(107,124,77,0.18);
+    text-align: center;
+    z-index: 3;
+  }
+
+  /* Aspect ratio sizes */
+  .img-frame--banner { width: 100%; aspect-ratio: 21/7; margin: 2.5rem 0; }
+  .img-frame--wide   { width: 100%; aspect-ratio: 16/9; margin: 2rem 0; }
+  .img-frame--medium { width: 100%; aspect-ratio: 4/3;  margin: 0; }
+  .img-frame--square { width: 100%; aspect-ratio: 1/1;  margin: 0; }
+  .img-frame--tall   { width: 100%; aspect-ratio: 9/16; margin: 0; }
+
+  /* Grid wrappers */
+  .img-row { display: grid; gap: 1rem; margin: 2rem 0; }
+  .img-row--2   { grid-template-columns: 1fr 1fr; }
+  .img-row--3   { grid-template-columns: 1fr 1fr 1fr; }
+  .img-row--2-1 { grid-template-columns: 2fr 1fr; }
+  .img-row--1-2 { grid-template-columns: 1fr 2fr; }
+
+  /* ═══════════════════════════════════
+     HERO
+  ═══════════════════════════════════ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     text-align: center;
     padding: 4rem 2rem 6rem;
     overflow: hidden;
   }
-
-  .hero-trees {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  /* SVG forest silhouette */
-  .hero-trees svg {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 70%;
-  }
-
+  .hero-trees { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .hero-trees svg { position: absolute; bottom: 0; width: 100%; height: 70%; }
   .hero-fog {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(42,55,28,0.6) 0%, transparent 70%),
                 radial-gradient(ellipse 100% 40% at 50% 0%, rgba(10,14,8,0.8) 0%, transparent 60%);
     pointer-events: none;
   }
-
   .hero-content { position: relative; z-index: 2; }
 
   .studio-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.4em;
-    color: var(--lichen);
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    opacity: 0;
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    letter-spacing: 0.4em; color: var(--lichen); text-transform: uppercase;
+    margin-bottom: 2rem; opacity: 0;
     animation: fadeUp 1s ease 0.3s forwards;
   }
-
   .hero h1 {
     font-family: 'Cinzel', serif;
-    font-size: clamp(2.8rem, 8vw, 7rem);
-    font-weight: 600;
-    color: var(--parchment);
-    line-height: 1.05;
-    letter-spacing: 0.02em;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.6s forwards;
+    font-size: clamp(2.8rem, 8vw, 7rem); font-weight: 600;
+    color: var(--parchment); line-height: 1.05; letter-spacing: 0.02em;
+    opacity: 0; animation: fadeUp 1s ease 0.6s forwards;
     text-shadow: 0 0 60px rgba(196,131,42,0.15);
   }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--glow);
-    font-weight: 400;
-  }
-
+  .hero h1 em { font-style: italic; color: var(--glow); font-weight: 400; }
   .hero-sub {
-    margin-top: 1.5rem;
-    font-size: 1rem;
-    font-weight: 300;
-    letter-spacing: 0.25em;
-    color: var(--fog);
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.9s forwards;
+    margin-top: 1.5rem; font-size: 1rem; font-weight: 300;
+    letter-spacing: 0.25em; color: var(--fog); text-transform: uppercase;
+    opacity: 0; animation: fadeUp 1s ease 0.9s forwards;
   }
-
   .hero-meta {
-    margin-top: 2.5rem;
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 1s ease 1.2s forwards;
+    margin-top: 2.5rem; display: flex; gap: 2rem;
+    justify-content: center; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 1s ease 1.2s forwards;
   }
-
   .hero-meta span {
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    color: var(--lichen);
-    text-transform: uppercase;
-    border-left: 1px solid var(--lichen);
-    padding-left: 1rem;
+    font-size: 0.8rem; letter-spacing: 0.2em; color: var(--lichen);
+    text-transform: uppercase; border-left: 1px solid var(--lichen); padding-left: 1rem;
   }
   .hero-meta span:first-child { border: none; padding: 0; }
-
   .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0;
-    animation: fadeUp 1s ease 1.8s forwards;
-    z-index: 2;
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0; animation: fadeUp 1s ease 1.8s forwards; z-index: 2;
   }
+  .scroll-hint span { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--lichen); text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--lichen), transparent); animation: scrollPulse 2s ease-in-out infinite; }
 
-  .scroll-hint span {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    color: var(--lichen);
-    text-transform: uppercase;
-  }
-
-  .scroll-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--lichen), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-
-  /* ── NAV ── */
+  /* ═══════════════════════════════════
+     NAV
+  ═══════════════════════════════════ */
   nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(26,32,21,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(107,124,77,0.2);
-    padding: 0 2rem;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(26,32,21,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(107,124,77,0.2); padding: 0 2rem;
   }
-
   .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    height: 56px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    max-width: 1100px; margin: 0 auto; display: flex;
+    align-items: center; gap: 2rem; height: 56px; overflow-x: auto; scrollbar-width: none;
   }
   .nav-inner::-webkit-scrollbar { display: none; }
-
   nav a {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--lichen);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: color 0.2s;
-    flex-shrink: 0;
+    font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--lichen); text-decoration: none;
+    white-space: nowrap; transition: color 0.2s; flex-shrink: 0;
   }
   nav a:hover { color: var(--glow); }
 
-  /* ── MAIN LAYOUT ── */
+  /* ═══════════════════════════════════
+     LAYOUT & TYPOGRAPHY
+  ═══════════════════════════════════ */
   main { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
 
-  /* ── SECTIONS ── */
-  section {
-    padding: 6rem 0;
-    border-top: 1px solid rgba(107,124,77,0.15);
-  }
+  section { padding: 6rem 0; border-top: 1px solid rgba(107,124,77,0.15); }
 
   .section-eyebrow {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.35em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.35em;
+    color: var(--amber); text-transform: uppercase; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 1rem;
   }
-  .section-eyebrow::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(196,131,42,0.25);
-  }
+  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: rgba(196,131,42,0.25); }
 
-  h2 {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
-    font-weight: 600;
-    color: var(--parchment);
-    line-height: 1.2;
-    margin-bottom: 1.8rem;
-  }
-
-  h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--glow);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.8rem;
-    margin-top: 2.5rem;
-  }
-
+  h2 { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 600; color: var(--parchment); line-height: 1.2; margin-bottom: 1.8rem; }
+  h3 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--glow); letter-spacing: 0.08em; margin-bottom: 0.8rem; margin-top: 2.5rem; }
   p { color: var(--fog); margin-bottom: 1.2rem; }
   p:last-child { margin-bottom: 0; }
-
   strong { color: var(--parchment); font-weight: 600; }
   em { color: var(--glow); font-style: italic; }
 
-  /* ── PULL QUOTE ── */
   blockquote {
-    margin: 3rem 0;
-    padding: 2rem 2.5rem;
-    border-left: 3px solid var(--amber);
-    background: rgba(196,131,42,0.05);
-    font-size: 1.25rem;
-    font-style: italic;
-    color: var(--parchment);
-    font-weight: 300;
+    margin: 3rem 0; padding: 2rem 2.5rem;
+    border-left: 3px solid var(--amber); background: rgba(196,131,42,0.05);
+    font-size: 1.25rem; font-style: italic; color: var(--parchment); font-weight: 300;
   }
 
-  /* ── CARDS ── */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin: 2.5rem 0;
-  }
-
-  .card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(107,124,77,0.2);
-    border-radius: 2px;
-    padding: 1.8rem;
-    transition: border-color 0.3s, background 0.3s;
-  }
-  .card:hover {
-    border-color: rgba(196,131,42,0.4);
-    background: rgba(196,131,42,0.04);
-  }
-
-  .card-num {
-    font-family: 'Cinzel', serif;
-    font-size: 2rem;
-    color: rgba(196,131,42,0.25);
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 0.8rem;
-  }
-
-  .card h4 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--parchment);
-    margin-bottom: 0.6rem;
-  }
-
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2.5rem 0; }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(107,124,77,0.2); border-radius: 2px; padding: 1.8rem; transition: border-color 0.3s, background 0.3s; }
+  .card:hover { border-color: rgba(196,131,42,0.4); background: rgba(196,131,42,0.04); }
+  .card-num { font-family: 'Cinzel', serif; font-size: 2rem; color: rgba(196,131,42,0.25); font-weight: 700; line-height: 1; margin-bottom: 0.8rem; }
+  .card h4 { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--parchment); margin-bottom: 0.6rem; }
   .card p { font-size: 0.9rem; margin: 0; }
 
-  /* ── ARC CARDS ── */
-  .arc-list { display: flex; flex-direction: column; gap: 2px; margin: 2rem 0; }
-
-  .arc {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    align-items: start;
-    gap: 2rem;
-    padding: 2rem 0;
-    border-bottom: 1px solid rgba(107,124,77,0.1);
-  }
+  /* Arc list */
+  .arc-list { display: flex; flex-direction: column; margin: 2rem 0; }
+  .arc { display: grid; grid-template-columns: 100px 1fr; align-items: start; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid rgba(107,124,77,0.1); }
   .arc:last-child { border: none; }
+  .arc-label { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); padding-top: 0.3rem; }
 
-  .arc-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--amber);
-    padding-top: 0.3rem;
-  }
-
-  /* ── AI TOOLS ── */
-  .ai-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-
-  .ai-tool {
-    padding: 1.4rem;
-    border: 1px solid rgba(107,124,77,0.2);
-    border-radius: 2px;
-    background: rgba(255,255,255,0.02);
-  }
-
-  .ai-tool-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--glow);
-    margin-bottom: 0.8rem;
-  }
-
-  .ai-tool ul {
-    list-style: none;
-    padding: 0;
-  }
-  .ai-tool li {
-    font-size: 0.85rem;
-    color: var(--fog);
-    padding: 0.25rem 0;
-    border-bottom: 1px solid rgba(107,124,77,0.1);
-    line-height: 1.4;
-  }
+  /* AI tools */
+  .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 2rem 0; }
+  .ai-tool { padding: 1.4rem; border: 1px solid rgba(107,124,77,0.2); border-radius: 2px; background: rgba(255,255,255,0.02); }
+  .ai-tool-name { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--glow); margin-bottom: 0.8rem; }
+  .ai-tool ul { list-style: none; padding: 0; }
+  .ai-tool li { font-size: 0.85rem; color: var(--fog); padding: 0.25rem 0; border-bottom: 1px solid rgba(107,124,77,0.1); line-height: 1.4; }
   .ai-tool li:last-child { border: none; }
   .ai-tool li::before { content: '— '; color: var(--lichen); }
 
-  /* ── TEAM CONTRIBUTIONS ── */
+  /* Contrib */
   .contrib-section { margin: 2.5rem 0; }
-
-  .contrib-member {
-    margin-bottom: 2rem;
-    padding: 1.8rem;
-    border: 1px solid rgba(107,124,77,0.15);
-    background: rgba(255,255,255,0.02);
-  }
-
-  .contrib-member h4 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--parchment);
-    margin-bottom: 0.6rem;
-  }
-
+  .contrib-member { margin-bottom: 2rem; padding: 1.8rem; border: 1px solid rgba(107,124,77,0.15); background: rgba(255,255,255,0.02); }
+  .contrib-member h4 { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--parchment); margin-bottom: 0.6rem; }
   .contrib-member p { font-size: 0.92rem; }
 
-  /* ── TIMELINE ── */
+  /* Timeline */
   .timeline { position: relative; margin: 2.5rem 0; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--amber), transparent);
-  }
-
-  .t-item {
-    padding: 0 0 2.5rem 2.5rem;
-    position: relative;
-  }
-
-  .t-item::before {
-    content: '';
-    position: absolute;
-    left: -4px;
-    top: 6px;
-    width: 9px;
-    height: 9px;
-    background: var(--amber);
-    border-radius: 50%;
-  }
-
-  .t-phase {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-  }
-
-  .t-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.9rem;
-    color: var(--parchment);
-    margin-bottom: 0.5rem;
-  }
-
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--amber), transparent); }
+  .t-item { padding: 0 0 2.5rem 2.5rem; position: relative; }
+  .t-item::before { content: ''; position: absolute; left: -4px; top: 6px; width: 9px; height: 9px; background: var(--amber); border-radius: 50%; }
+  .t-phase { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 0.4rem; }
+  .t-title { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--parchment); margin-bottom: 0.5rem; }
   .t-item p { font-size: 0.9rem; }
 
-  /* ── DIVIDER ── */
-  .ornament {
-    text-align: center;
-    color: rgba(196,131,42,0.3);
-    font-size: 1.2rem;
-    margin: 1rem 0;
-    letter-spacing: 0.5em;
-  }
+  .ornament { text-align: center; color: rgba(196,131,42,0.3); font-size: 1.2rem; margin: 1rem 0; letter-spacing: 0.5em; }
 
-  /* ── REFLECTION ── */
-  .reflection-box {
-    border: 1px solid rgba(196,131,42,0.3);
-    padding: 2.5rem;
-    margin: 2.5rem 0;
-    background: rgba(196,131,42,0.03);
-    position: relative;
-  }
-  .reflection-box::before {
-    content: '"';
-    position: absolute;
-    top: -1rem;
-    left: 2rem;
-    font-family: 'Cinzel', serif;
-    font-size: 5rem;
-    color: rgba(196,131,42,0.2);
-    line-height: 1;
-  }
+  .reflection-box { border: 1px solid rgba(196,131,42,0.3); padding: 2.5rem; margin: 2.5rem 0; background: rgba(196,131,42,0.03); position: relative; }
+  .reflection-box::before { content: '"'; position: absolute; top: -1rem; left: 2rem; font-family: 'Cinzel', serif; font-size: 5rem; color: rgba(196,131,42,0.2); line-height: 1; }
 
-  /* ── TAG PILLS ── */
   .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0; }
+  .tag { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lichen); border: 1px solid rgba(107,124,77,0.4); padding: 0.3rem 0.8rem; border-radius: 1px; }
 
-  .tag {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--lichen);
-    border: 1px solid rgba(107,124,77,0.4);
-    padding: 0.3rem 0.8rem;
-    border-radius: 1px;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 4rem 2rem;
-    border-top: 1px solid rgba(107,124,77,0.15);
-    font-size: 0.8rem;
-    color: var(--lichen);
-    letter-spacing: 0.1em;
-  }
+  footer { text-align: center; padding: 4rem 2rem; border-top: 1px solid rgba(107,124,77,0.15); font-size: 0.8rem; color: var(--lichen); letter-spacing: 0.1em; }
   footer strong { color: var(--fog); }
 
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  /* Animations */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
 
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 1; transform: scaleY(1); transform-origin: top; }
-    50%       { opacity: 0.4; transform: scaleY(0.6); transform-origin: top; }
-  }
-
-  /* Reveal on scroll */
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
     .arc { grid-template-columns: 1fr; gap: 0.5rem; }
     .arc-label { padding: 0; }
     nav { padding: 0 1rem; }
     main { padding: 0 1.2rem; }
+    .img-row--2, .img-row--3, .img-row--2-1, .img-row--1-2 { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══════════════ HERO ══════════════ -->
+<!-- ══ HERO ══ -->
 <header class="hero">
   <div class="hero-trees">
     <svg viewBox="0 0 1400 600" preserveAspectRatio="xMidYMax slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- deep trees -->
-      <polygon points="100,600 160,320 220,600" fill="#1a2015"/>
-      <polygon points="140,600 200,280 260,600" fill="#1e2618"/>
-      <polygon points="230,600 300,260 370,600" fill="#1a2015"/>
-      <polygon points="310,600 380,300 450,600" fill="#1e2618"/>
-      <polygon points="50,600 120,350 190,600" fill="#161c12"/>
-      <!-- mid trees -->
-      <polygon points="0,600 80,250 160,600" fill="#212b18"/>
-      <polygon points="500,600 570,230 640,600" fill="#1e2618"/>
-      <polygon points="560,600 640,200 720,600" fill="#212b18"/>
-      <polygon points="700,600 780,240 860,600" fill="#1e2618"/>
-      <polygon points="800,600 880,210 960,600" fill="#212b18"/>
-      <polygon points="900,600 980,260 1060,600" fill="#1a2015"/>
-      <polygon points="1000,600 1090,220 1180,600" fill="#1e2618"/>
-      <polygon points="1100,600 1180,250 1260,600" fill="#212b18"/>
-      <polygon points="1200,600 1290,200 1380,600" fill="#1a2015"/>
+      <polygon points="100,600 160,320 220,600" fill="#1a2015"/><polygon points="140,600 200,280 260,600" fill="#1e2618"/>
+      <polygon points="230,600 300,260 370,600" fill="#1a2015"/><polygon points="310,600 380,300 450,600" fill="#1e2618"/>
+      <polygon points="50,600 120,350 190,600" fill="#161c12"/><polygon points="0,600 80,250 160,600" fill="#212b18"/>
+      <polygon points="500,600 570,230 640,600" fill="#1e2618"/><polygon points="560,600 640,200 720,600" fill="#212b18"/>
+      <polygon points="700,600 780,240 860,600" fill="#1e2618"/><polygon points="800,600 880,210 960,600" fill="#212b18"/>
+      <polygon points="900,600 980,260 1060,600" fill="#1a2015"/><polygon points="1000,600 1090,220 1180,600" fill="#1e2618"/>
+      <polygon points="1100,600 1180,250 1260,600" fill="#212b18"/><polygon points="1200,600 1290,200 1380,600" fill="#1a2015"/>
       <polygon points="1280,600 1360,240 1440,600" fill="#1e2618"/>
-      <!-- foreground trunks -->
       <rect x="60"  y="500" width="12" height="100" fill="#110e0a"/>
       <rect x="280" y="490" width="14" height="110" fill="#110e0a"/>
       <rect x="500" y="510" width="10" height="90"  fill="#110e0a"/>
@@ -551,36 +322,23 @@
       <rect x="940" y="505" width="11" height="95"  fill="#110e0a"/>
       <rect x="1160" y="495" width="14" height="105" fill="#110e0a"/>
       <rect x="1350" y="510" width="10" height="90"  fill="#110e0a"/>
-      <!-- mist layer -->
-      <rect x="0" y="480" width="1400" height="120" fill="url(#mist-grad)" opacity="0.6"/>
-      <defs>
-        <linearGradient id="mist-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1a2015" stop-opacity="0"/>
-          <stop offset="100%" stop-color="#1a2015" stop-opacity="1"/>
-        </linearGradient>
-      </defs>
+      <rect x="0" y="480" width="1400" height="120" fill="url(#mg)" opacity="0.6"/>
+      <defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2015" stop-opacity="0"/><stop offset="100%" stop-color="#1a2015" stop-opacity="1"/></linearGradient></defs>
     </svg>
   </div>
   <div class="hero-fog"></div>
-
   <div class="hero-content">
     <p class="studio-label">Mythos Studio · VDES34444 Interactive Narrative · Winter 2026</p>
-    <h1>Between<br><em>The Paths</em></h1>
+    <h1>Between<br><em>Two Paths</em></h1>
     <p class="hero-sub">Process Documentation Case Study</p>
     <div class="hero-meta">
-      <span>Rayne</span>
-      <span>Rianna</span>
-      <span>Livia</span>
+      <span>Rayne</span><span>Rianna</span><span>Livia</span><span>Sheridan College</span>
     </div>
   </div>
-
-  <div class="scroll-hint">
-    <span>Enter</span>
-    <div class="scroll-line"></div>
-  </div>
+  <div class="scroll-hint"><span>Enter</span><div class="scroll-line"></div></div>
 </header>
 
-<!-- ══════════════ NAV ══════════════ -->
+<!-- ══ NAV ══ -->
 <nav>
   <div class="nav-inner">
     <a href="#overview">Overview</a>
@@ -594,516 +352,513 @@
   </div>
 </nav>
 
-<!-- ══════════════ MAIN ══════════════ -->
 <main>
 
-  <!-- ── OVERVIEW ── -->
-  <section id="overview">
-    <div class="reveal">
-      <p class="section-eyebrow">Project Overview</p>
-      <h2>An Allegory of the Cave in Augmented Reality</h2>
-    </div>
+<!-- ════════ OVERVIEW ════════ -->
+<section id="overview">
+  <div class="reveal">
+    <p class="section-eyebrow">Project Overview</p>
+    <h2>An Allegory of the Cave in Augmented Reality</h2>
+  </div>
+  <div class="reveal">
+    <p><strong>Between Two Paths</strong> is an AR interactive narrative built by Mythos Studio — Rayne, Rianna, and Livia — for VDES34444 Interactive Narrative at Sheridan College. The experience is rooted in <em>Plato's Allegory of the Cave</em>: a philosophical meditation on perception, habit, and how awareness reshapes the way we interpret reality.</p>
+    <p>Users explore a mysterious augmented forest overlaid on Sheridan's Trafalgar campus. Through a physical poster, a landing page, an AR scavenger hunt, and two branching Instagram epilogues, the experience asks one question: <em>when you see two paths, which do you trust?</em></p>
+  </div>
 
-    <div class="reveal">
-      <p>
-        <strong>Between The Paths</strong> is an AR interactive narrative built by Mythos Studio — Rayne, Rianna, and Livia — for VDES34444 Interactive Narrative at Sheridan College. The experience is rooted in <em>Plato's Allegory of the Cave</em>: a philosophical meditation on perception, habit, and how awareness reshapes the way we interpret reality.
-      </p>
-      <p>
-        Users explore a mysterious augmented forest overlaid on Sheridan's Trafalgar campus. Through a physical poster, a landing page, an AR scavenger hunt, and two branching Instagram epilogues, the experience asks one question: <em>when you see two paths, which do you trust?</em>
-      </p>
-    </div>
-
-    <blockquote class="reveal">
-      "Our narrative emphasizes personal interpretation rather than resolution or conclusion — perception, awareness, and choice are strengthened through interaction."
-    </blockquote>
-
-    <div class="tags reveal">
-      <span class="tag">Augmented Reality</span>
-      <span class="tag">ZapWorks / Mattercraft</span>
-      <span class="tag">Interactive Narrative</span>
-      <span class="tag">Philosophy</span>
-      <span class="tag">VPS Scanning</span>
-      <span class="tag">Instagram</span>
-      <span class="tag">TypeScript</span>
-      <span class="tag">Adobe Illustrator</span>
-    </div>
-
-    <div class="card-grid reveal">
-      <div class="card">
-        <div class="card-num">01</div>
-        <h4>Project 1</h4>
-        <p>Interactive Narrative Proposal — concept, research, story structure, characters, visual direction, and technical planning.</p>
+  <!-- ▸ Full-width hero shot of the AR experience -->
+  <div class="reveal img-frame img-frame--banner">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       </div>
-      <div class="card">
-        <div class="card-num">02</div>
-        <h4>Project 2</h4>
-        <p>Mapping the Interactive Experience — AR platform evaluation, asset generation, landing page, narrative integration.</p>
+      <p class="img-frame-label">Final AR Experience — Best Full-Scene Screenshot<br>Recommended: wide phone capture showing forest &amp; campus</p>
+    </div>
+    <div class="img-frame-caption">Between Two Paths live on Sheridan Trafalgar campus — MultiSet VPS</div>
+  </div>
+
+  <blockquote class="reveal">"Our narrative emphasizes personal interpretation rather than resolution or conclusion — perception, awareness, and choice are strengthened through interaction."</blockquote>
+
+  <div class="tags reveal">
+    <span class="tag">Augmented Reality</span><span class="tag">ZapWorks / Mattercraft</span>
+    <span class="tag">Interactive Narrative</span><span class="tag">Philosophy</span>
+    <span class="tag">VPS Scanning</span><span class="tag">Instagram</span>
+    <span class="tag">TypeScript</span><span class="tag">Adobe Illustrator</span>
+  </div>
+
+  <div class="card-grid reveal">
+    <div class="card"><div class="card-num">01</div><h4>Project 1</h4><p>Interactive Narrative Proposal — concept, research, story structure, characters, visual direction, and technical planning.</p></div>
+    <div class="card"><div class="card-num">02</div><h4>Project 2</h4><p>Mapping the Interactive Experience — AR platform evaluation, asset generation, landing page, narrative integration.</p></div>
+    <div class="card"><div class="card-num">03</div><h4>Project 3</h4><p>Cognitive Walkthrough — final AR build, physical artifacts, Instagram epilogues, complete experience deployment.</p></div>
+  </div>
+</section>
+
+<!-- ════════ NARRATIVE ════════ -->
+<section id="narrative">
+  <div class="reveal">
+    <p class="section-eyebrow">Narrative Development</p>
+    <h2>The Story &amp; Its Arcs</h2>
+  </div>
+  <div class="reveal">
+    <p>Our story places the user in a looping forest path with <strong>no initial context or objective</strong>, encouraging passive progression and familiarity. Subtle disruptions gradually invite the user to question the nature of their environment. A mysterious owl reveals hidden truths. Map fragments must be collected. Then — a choice.</p>
+    <p>Crucially, the experience subverts the user's expectations. <em>The path that looks safe is the trap. The path that looks dangerous is the way out.</em></p>
+  </div>
+
+  <!-- ▸ Storyboard + mood board side by side -->
+  <div class="reveal img-row img-row--2">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner">
+        <div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+        <p class="img-frame-label">Storyboard or Initial Structure Sketch<br>From Project 1 planning phase</p>
       </div>
-      <div class="card">
-        <div class="card-num">03</div>
-        <h4>Project 3</h4>
-        <p>Cognitive Walkthrough — final AR build, physical artifacts, Instagram epilogues, complete experience deployment.</p>
+      <div class="img-frame-caption">Early narrative structure — Project 1</div>
+    </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner">
+        <div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+        <p class="img-frame-label">Visual Mood Board / Style Tile<br>Art direction research from Project 1</p>
       </div>
+      <div class="img-frame-caption">Storybook forest art direction references</div>
     </div>
-  </section>
+  </div>
 
-  <!-- ── NARRATIVE ── -->
-  <section id="narrative">
-    <div class="reveal">
-      <p class="section-eyebrow">Narrative Development</p>
-      <h2>The Story &amp; Its Arcs</h2>
+  <div class="arc-list reveal">
+    <div class="arc"><div class="arc-label">Arc One</div><div><h3>Comfort &amp; Conformity</h3><p>The user finds themselves on a forest path with no explanation, goal, or sense of purpose. They move forward alongside NPCs, following the path without questioning it. The experience establishes routine and comfort, while quietly limiting the user's agency.</p></div></div>
+    <div class="arc"><div class="arc-label">Arc Two</div><div><h3>Disruption &amp; Discovery</h3><p>The user senses the experience is unnatural. A mysterious creature — the Owl — appears, acknowledging the user and revealing the unsettling nature of the world. Hidden map fragments become visible. The user must collect all four to gain understanding and break out of the loop.</p></div></div>
+    <div class="arc"><div class="arc-label">Arc Three</div><div><h3>The Choice</h3><p>With the full map revealed, the illusion is broken — but certainty is still unclear. Two paths appear: one familiar and beautiful, the other unknown and unmarked. The user chooses whether to remain in comfort or step into uncertainty, with no guaranteed outcome.</p></div></div>
+  </div>
+
+  <!-- ▸ Final map overlay full width -->
+  <div class="reveal img-frame img-frame--wide">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <p class="img-frame-label">Final Map Overlay — The Two Paths<br>In-experience choice screen (phone screenshot)</p>
     </div>
+    <div class="img-frame-caption">The assembled map — Forest Path vs. The Deep Unknown</div>
+  </div>
 
-    <div class="reveal">
-      <p>
-        Our story places the user in a looping forest path with <strong>no initial context or objective</strong>, encouraging passive progression and familiarity. Subtle disruptions gradually invite the user to question the nature of their environment. A mysterious owl reveals hidden truths. Map fragments must be collected. Then — a choice.
-      </p>
-      <p>
-        Crucially, the experience subverts the user's expectations. <em>The path that looks safe is the trap. The path that looks dangerous is the way out.</em> This bait-and-switch is the allegory's core: we follow what appears trustworthy without questioning it.
-      </p>
+  <div class="reveal">
+    <h3>Characters</h3>
+    <div class="card-grid">
+      <div class="card"><h4>The User</h4><p>The player-character. They explore the forest and navigate the experience — the primary vessel for the allegory.</p></div>
+      <div class="card"><h4>The NPCs</h4><p>Silent figures populating the forest, walking ahead of the user. They represent individuals who follow conformity without question.</p></div>
+      <div class="card"><h4>The Owl</h4><p>Revised from guide to <em>manipulator</em> — it works for the forest, steering users toward the "bad" path presented as safety.</p></div>
     </div>
+  </div>
 
-    <div class="arc-list reveal">
-      <div class="arc">
-        <div class="arc-label">Arc One</div>
-        <div>
-          <h3>Comfort &amp; Conformity</h3>
-          <p>The user finds themselves on a forest path with no explanation, goal, or sense of purpose. They move forward alongside NPCs, following the path without questioning it. The experience establishes routine and comfort, while quietly limiting the user's agency.</p>
-        </div>
-      </div>
-      <div class="arc">
-        <div class="arc-label">Arc Two</div>
-        <div>
-          <h3>Disruption &amp; Discovery</h3>
-          <p>The user senses the experience is unnatural. A mysterious creature — the Owl — appears, acknowledging the user and revealing the unsettling nature of the world. Hidden map fragments become visible. The user must collect all four to gain understanding and break out of the loop.</p>
-        </div>
-      </div>
-      <div class="arc">
-        <div class="arc-label">Arc Three</div>
-        <div>
-          <h3>The Choice</h3>
-          <p>With the full map revealed, the illusion is broken — but certainty is still unclear. Two paths appear: one familiar and beautiful, the other unknown and unmarked. The user chooses whether to remain in comfort or step into uncertainty, with no guaranteed outcome.</p>
-        </div>
-      </div>
+  <!-- ▸ Character assets: NPC / Owl / in-AR view -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">NPC Asset</p></div>
+      <div class="img-frame-caption">Conformity figure</div>
     </div>
-
-    <div class="reveal">
-      <h3>Characters</h3>
-      <div class="card-grid">
-        <div class="card">
-          <h4>The User</h4>
-          <p>The player-character. They explore the forest and navigate the experience — the primary vessel for the allegory.</p>
-        </div>
-        <div class="card">
-          <h4>The NPCs</h4>
-          <p>Silent figures populating the forest, walking ahead of the user. They represent individuals who follow conformity without question.</p>
-        </div>
-        <div class="card">
-          <h4>The Owl</h4>
-          <p>A mysterious creature that lives in the forest. Originally a guide, the owl was revised to be a <em>manipulator</em> — it works for the forest, steering users toward the "bad" path presented as safety.</p>
-        </div>
-      </div>
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Owl Asset</p></div>
+      <div class="img-frame-caption">The forest's manipulator</div>
     </div>
-
-    <div class="reveal">
-      <h3>Themes</h3>
-      <div class="card-grid">
-        <div class="card"><h4>Comfort vs. Truth</h4><p>Is it better to live pleasantly in illusion or painfully in reality?</p></div>
-        <div class="card"><h4>Perception &amp; Illusion</h4><p>What we accept as "normal" is rarely unexamined.</p></div>
-        <div class="card"><h4>Choice &amp; Free Will</h4><p>Agency only matters when the options are genuinely understood.</p></div>
-        <div class="card"><h4>Awareness &amp; Conformity</h4><p>The Construct's power is sustained by obedience — awareness is the first step toward breaking it.</p></div>
-      </div>
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">User POV in AR</p></div>
+      <div class="img-frame-caption">First-person perspective</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <h3>Experience Structure</h3>
-      <p>The experience unfolds across five distinct phases, each on a different platform:</p>
-      <div class="timeline">
-        <div class="t-item">
-          <div class="t-phase">Discovery</div>
-          <div class="t-title">Physical Poster → Landing Page</div>
-          <p>User scans a QR code on a physical poster placed in campus. This takes them to the landing page — a dark forest environment coded in HTML/CSS with Claude's assistance.</p>
-        </div>
-        <div class="t-item">
-          <div class="t-phase">Introduction</div>
-          <div class="t-title">AR Experience Loads</div>
-          <p>User enters the AR experience from the landing page. The Sheridan campus is overlaid with stylized forest trees, NPCs, and the owl character anchored via MultiSet VPS scanning.</p>
-        </div>
-        <div class="t-item">
-          <div class="t-phase">Scene 2</div>
-          <div class="t-title">Owl Encounter &amp; Map Fragments</div>
-          <p>User meets the owl, which introduces the concept of map fragments. Wayfinding guides them to each of four locations: SCAET, the Library, the Learning Commons, and B Wing.</p>
-        </div>
-        <div class="t-item">
-          <div class="t-phase">Scene 3</div>
-          <div class="t-title">The Final Map</div>
-          <p>Collecting all four fragments reveals the complete map. A custom-scripted overlay appears showing two diverging paths — one inviting, one ominous.</p>
-        </div>
-        <div class="t-item">
-          <div class="t-phase">Scene 4</div>
-          <div class="t-title">Instagram Epilogues</div>
-          <p>The user is redirected to one of two Instagram accounts depending on their choice, each with five posts unfolding the narrative's true meaning.</p>
-        </div>
-      </div>
+  <div class="reveal">
+    <h3>The Bait &amp; Switch</h3>
+    <p>The original concept positioned the owl as a reliable, helpful guide. During production, the team revised this substantially. <strong>The owl now misleads the user</strong> into choosing the "bad" path — presented as the beautiful, safe option. This inversion is the experience's central philosophical statement.</p>
+  </div>
+
+  <!-- ▸ Campus route map -->
+  <div class="reveal img-frame img-frame--wide">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <p class="img-frame-label">Sheridan Campus Route Map<br>Annotated scavenger hunt: SCAET → Library → Learning Commons → B Wing</p>
     </div>
+    <div class="img-frame-caption">Physical route the user follows across Trafalgar campus</div>
+  </div>
 
-    <div class="reveal">
-      <h3>The Bait &amp; Switch</h3>
-      <p>
-        The original concept positioned the owl as a reliable, helpful guide. During production, the team revised this substantially. <strong>The owl now misleads the user</strong> into choosing the "bad" path — which is presented as the beautiful, safe option. The owl works for the forest and wants to keep as many people trapped there as possible.
-      </p>
-      <p>
-        Correspondingly, <em>The Deep Unknown</em> Instagram (visually dark and ominous) is actually the path to truth and freedom, while <em>The Forest Path</em> Instagram (warm, inviting) reveals that the user is still trapped. This inversion is the experience's central philosophical statement.
-      </p>
+  <!-- ▸ Experience structure / timeline diagram -->
+  <div class="reveal">
+    <h3>Experience Structure</h3>
+  </div>
+  <div class="reveal timeline">
+    <div class="t-item"><div class="t-phase">Discovery</div><div class="t-title">Physical Poster → Landing Page</div><p>User scans a QR code on a physical campus poster, arriving at the HTML/CSS landing page coded with Claude's assistance.</p></div>
+    <div class="t-item"><div class="t-phase">Introduction</div><div class="t-title">AR Experience Loads</div><p>User enters the AR experience. The campus is overlaid with stylized forest trees, NPCs, and the owl — anchored via MultiSet VPS.</p></div>
+    <div class="t-item"><div class="t-phase">Scene 2</div><div class="t-title">Owl Encounter &amp; Map Fragments</div><p>The owl introduces map fragments. Wayfinding guides the user to four campus locations: SCAET, Library, Learning Commons, B Wing.</p></div>
+    <div class="t-item"><div class="t-phase">Scene 3</div><div class="t-title">The Final Map</div><p>Collecting all four fragments reveals the complete map overlay with two diverging paths — one inviting, one ominous.</p></div>
+    <div class="t-item"><div class="t-phase">Scene 4</div><div class="t-title">Instagram Epilogues</div><p>The user is redirected to one of two Instagram accounts depending on their choice, each with five posts unfolding the narrative's true meaning.</p></div>
+  </div>
+</section>
+
+<!-- ════════ AR DEVELOPMENT ════════ -->
+<section id="development">
+  <div class="reveal">
+    <p class="section-eyebrow">AR / VR Development</p>
+    <h2>Building the Augmented Forest</h2>
+  </div>
+  <div class="reveal">
+    <p>The team evaluated three platforms — <strong>Unity</strong>, <strong>Snap Lens Studio</strong>, and <strong>Zappar</strong> — before committing. Unity's complexity and Lens Studio's outdated tutorials both ruled them out. Zappar's VPS tracking and no-download browser experience made it the best fit.</p>
+  </div>
+
+  <!-- ▸ Platform testing screenshots -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Unity Test<br>Button / dialogue interaction</p></div>
+      <div class="img-frame-caption">Unity — too complex, ruled out</div>
     </div>
-  </section>
-
-  <!-- ── AR DEVELOPMENT ── -->
-  <section id="development">
-    <div class="reveal">
-      <p class="section-eyebrow">AR / VR Development</p>
-      <h2>Building the Augmented Forest</h2>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Lens Studio Test<br>AI-assisted interaction</p></div>
+      <div class="img-frame-caption">Lens Studio — outdated tutorials</div>
     </div>
-
-    <div class="reveal">
-      <p>
-        The team conducted extensive platform research before committing to Zappar/Mattercraft. Three platforms were evaluated: <strong>Unity</strong>, <strong>Snap Lens Studio</strong>, and <strong>Zappar</strong>. Unity's complexity and Lens Studio's outdated tutorials both ruled them out. Zappar's VPS tracking and no-download browser experience made it the best fit.
-      </p>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Zappar / Mattercraft<br>Chosen platform</p></div>
+      <div class="img-frame-caption">Zappar — final platform</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <h3>VPS Scanning: From Immersal to MultiSet</h3>
-      <p>
-        Zappar supports two VPS providers. Immersal was tested first — scans came out pixelated and objects anchored below floor level. MultiSet proved far superior: Rayne successfully scanned the entire campus route in one session, and objects stayed reliably anchored during mobile testing. Livia's device was incompatible with MultiSet's scanning app, so the scan was Rayne's primary responsibility.
-      </p>
+  <div class="reveal">
+    <h3>VPS Scanning: From Immersal to MultiSet</h3>
+    <p>Immersal was tested first — scans came out pixelated, objects anchored below floor level. MultiSet proved far superior: Rayne scanned the entire campus route in a single session with reliable anchoring during mobile testing.</p>
+  </div>
+
+  <!-- ▸ VPS comparison -->
+  <div class="reveal img-row img-row--2">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Immersal VPS Scan<br>Failed / pixelated result</p></div>
+      <div class="img-frame-caption">Immersal — unusable mesh quality</div>
     </div>
-
-    <div class="reveal">
-      <h3>Key Technical Implementations (Rayne)</h3>
-      <div class="card-grid">
-        <div class="card">
-          <h4>Map Fragment Counter</h4>
-          <p>A custom TypeScript script — developed with Claude — makes each map fragment disappear on tap and increments a counter. When all four are collected, the final map overlay appears.</p>
-        </div>
-        <div class="card">
-          <h4>Wayfinding System</h4>
-          <p>Wayfinding updates one location at a time rather than showing the full route. When a fragment or artifact is scanned, the waypoint updates. Keeps the experience accessible regardless of campus familiarity.</p>
-        </div>
-        <div class="card">
-          <h4>Custom States &amp; Timelines</h4>
-          <p>Behaviors, active states, and timeline-driven animations were built in Mattercraft to control when assets appear and how interactions trigger events.</p>
-        </div>
-        <div class="card">
-          <h4>Image Tracking</h4>
-          <p>Livia implemented image tracking in Zappar, training the system to recognize physical artifacts. When the camera sees an artifact, text and animation appear — bridging the physical and digital layers.</p>
-        </div>
-      </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">MultiSet VPS Scan<br>Final campus scan</p></div>
+      <div class="img-frame-caption">MultiSet — anchor-stable, clear</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <h3>Mobile UI Optimization</h3>
-      <p>
-        During development, Rayne noticed the counter and dialog UI were clipping at mobile resolutions. Multiple rounds of testing across screen sizes were conducted to resize elements until they behaved correctly. This iterative, device-first approach ensured the experience worked for users directly on campus.
-      </p>
+  <div class="reveal">
+    <h3>Key Technical Implementations</h3>
+    <div class="card-grid">
+      <div class="card"><h4>Map Fragment Counter</h4><p>Custom TypeScript script — developed with Claude — disappears each fragment on tap and increments a counter. All four collected triggers the final map overlay.</p></div>
+      <div class="card"><h4>Wayfinding System</h4><p>Updates one location at a time. When a fragment or artifact is scanned, the waypoint updates — keeping it accessible to all campus visitors.</p></div>
+      <div class="card"><h4>States &amp; Timelines</h4><p>Behaviors, active states, and timeline-driven animations built in Mattercraft to control when assets appear and how interactions trigger events.</p></div>
+      <div class="card"><h4>Image Tracking</h4><p>Livia implemented image tracking — the system recognizes physical artifacts and triggers AR text and animation overlays.</p></div>
     </div>
-  </section>
+  </div>
 
-  <!-- ── DIGITAL MEDIA ── -->
-  <section id="digital">
-    <div class="reveal">
-      <p class="section-eyebrow">Digital Media Development</p>
-      <h2>Landing Page &amp; Instagram Epilogues</h2>
+  <!-- ▸ Mattercraft editor + mobile UI -->
+  <div class="reveal img-row img-row--2-1">
+    <div class="img-frame img-frame--wide">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Mattercraft Editor — Scene with Assets Placed<br>Trees, NPCs, owl &amp; fragment interactions in VPS scan</p></div>
+      <div class="img-frame-caption">Asset placement in the Sheridan campus scan</div>
     </div>
-
-    <div class="reveal">
-      <h3>Landing Page — Developed with Claude</h3>
-      <p>
-        The landing page was built iteratively with Claude as a co-developer. The team sketched their vision, shared it with Claude, and refined the output across <strong>12+ iterations</strong>. Early versions were too plain; later iterations refined the forest tree aesthetics, solved mobile display issues with tree trunk rendering, and nailed the brown-toned colour palette that implies depth and distance.
-      </p>
-      <p>
-        The final page is hosted on GitHub and uses pure HTML/CSS to render a moody, atmospheric forest environment. A single "Enter The Path" button loads the AR experience. In Project 3, Claude was again used to add the live AR link to this button.
-      </p>
-      <p>Live: <em>mercerri.github.io/betweenthepaths/</em></p>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Mobile UI<br>Counter &amp; wayfinding</p></div>
+      <div class="img-frame-caption">Resized after mobile testing</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <h3>Instagram Accounts (Rianna)</h3>
-      <p>
-        Both Instagram accounts function as the experience's ending — the user lands on one depending on their path choice. Each features five posts following a classic narrative arc: exposition, rising action, climax, falling action, and denouement. The forest path posts use warm, welcoming imagery; the deep unknown posts use darkness and shadow — but their underlying meanings are inverted.
-      </p>
-
-      <div class="card-grid">
-        <div class="card">
-          <h4>@the.forest_path</h4>
-          <p>The "bad" ending presented beautifully. Five posts reveal the owl was manipulating the user and that they remain trapped in the forest — they chose what felt safe.</p>
-        </div>
-        <div class="card">
-          <h4>@the.deep_unknown</h4>
-          <p>The "good" ending presented ominously. Five posts reveal this path never hid itself — it waited. The user didn't choose wrong; they chose freedom.</p>
-        </div>
-      </div>
+  <!-- ▸ Phone testing — portrait strip -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Phone — Fragment 1<br>SCAET</p></div>
+      <div class="img-frame-caption">Fragment 1 collected</div>
     </div>
-  </section>
-
-  <!-- ── ASSETS ── -->
-  <section id="assets">
-    <div class="reveal">
-      <p class="section-eyebrow">Asset Development</p>
-      <h2>Visual Language &amp; Physical Artifacts</h2>
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Phone — AR Forest<br>Trees &amp; NPCs in campus</p></div>
+      <div class="img-frame-caption">Forest overlay on campus</div>
     </div>
-
-    <div class="reveal">
-      <p>
-        All visual assets use a <strong>stylized 2D vector illustration style</strong> — warm-toned, storybook-inspired, with soft textures and glowing elements. This approach was chosen deliberately: photorealism would have required render infrastructure beyond scope, and the stylized look is more cohesive across the AR and Instagram layers.
-      </p>
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Phone — Owl Encounter<br>Scene 2 interaction</p></div>
+      <div class="img-frame-caption">Owl introduction screen</div>
     </div>
+  </div>
+</section>
 
-    <div class="reveal">
-      <h3>Digital Assets</h3>
-      <div class="card-grid">
-        <div class="card">
-          <h4>Trees</h4>
-          <p>Multiple tree variants — some with foliage, some without — generated using Adobe Illustrator's Text to Vector Graphic tool. Variety prevents the forest from feeling repetitive and flat.</p>
-        </div>
-        <div class="card">
-          <h4>NPCs</h4>
-          <p>Figures with backs facing the camera, appearing to walk in front of the user. Their anonymity reinforces the conformity theme — faceless, directionless followers.</p>
-        </div>
-        <div class="card">
-          <h4>Map Fragments</h4>
-          <p>Four collectible fragments that assemble into the final map. Traditional cartographic symbols (trees, mountains, X-marks) make the map feel tactile and earned.</p>
-        </div>
-        <div class="card">
-          <h4>Final Map</h4>
-          <p>The assembled map shows two diverging paths: one marked with skulls and warnings (the "bad" path that looks dangerous but leads to truth), and one with flowers and sparkles (the "good" path that leads to continued entrapment).</p>
-        </div>
-        <div class="card">
-          <h4>Owl</h4>
-          <p>The central character. Stands on the ground and interacts with the user in Scene 2. Visually friendly — which is the point.</p>
-        </div>
-        <div class="card">
-          <h4>Rocks</h4>
-          <p>Terrain variation assets in the same stylized vector style, adding believability to the AR forest floor.</p>
-        </div>
-      </div>
+<!-- ════════ DIGITAL MEDIA ════════ -->
+<section id="digital">
+  <div class="reveal">
+    <p class="section-eyebrow">Digital Media Development</p>
+    <h2>Landing Page &amp; Instagram Epilogues</h2>
+  </div>
+
+  <div class="reveal">
+    <h3>Landing Page — Developed with Claude</h3>
+    <p>The landing page was built iteratively with Claude as a co-developer across <strong>12+ iterations</strong> — refining forest aesthetics, solving mobile display issues, and perfecting the brown-toned depth palette. Hosted on GitHub Pages.</p>
+  </div>
+
+  <!-- ▸ Landing page early vs final -->
+  <div class="reveal img-row img-row--2">
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Landing Page — Early Claude Iteration<br>(iterations 1–4)</p></div>
+      <div class="img-frame-caption">Early exploration — too plain</div>
     </div>
-
-    <div class="reveal">
-      <h3>Physical Artifacts (Livia)</h3>
-      <p>
-        Three physical artifacts were placed around campus, each designed to blend into the environment while carrying the consistent Dasos owl logo for recognition. Image tracking lets Zappar detect them and trigger AR overlays.
-      </p>
-      <div class="card-grid">
-        <div class="card">
-          <h4>Artifact 1 — SCAET</h4>
-          <p>A brochure mimicking Sheridan's official viewbooks, acting as a hidden artifact. The owl logo marks it for users who know what to look for.</p>
-        </div>
-        <div class="card">
-          <h4>Artifact 2 — Library</h4>
-          <p>A soil planter marker labelled "Dasos" (Greek for "forest"), resembling standard plant markers placed around campus.</p>
-        </div>
-        <div class="card">
-          <h4>Artifact 3 — Learning Commons</h4>
-          <p>A poster styled to match Sheridan's advertisement displays, using a QR code and art that matches the experience's overall visual language.</p>
-        </div>
-      </div>
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Landing Page — Final Mobile Version</p></div>
+      <div class="img-frame-caption">Approved — subtle trunks, warm depth gradient</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <h3>Artifact Logo (Livia)</h3>
-      <p>
-        Livia designed the owl logo to represent the owl working for the forest — almost like a surveillance camera, watching the user. Feathers and leaves show the connection between the owl and the forest entities. The logo was hand-drawn, digitized with Gemini AI, then refined in Adobe Illustrator.
-      </p>
+  <div class="reveal">
+    <h3>Instagram Accounts (Rianna)</h3>
+    <p>Both accounts function as the experience's ending — each with five posts following a full narrative arc. The forest path posts look welcoming but reveal entrapment. The deep unknown posts look ominous but lead to freedom.</p>
+  </div>
+
+  <!-- ▸ Instagram grids side by side -->
+  <div class="reveal img-row img-row--2">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">@the.forest_path<br>Instagram Grid / Profile View</p></div>
+      <div class="img-frame-caption">The "bad" ending — warm &amp; inviting, leads to entrapment</div>
     </div>
-  </section>
-
-  <!-- ── AI AS TOOLS ── -->
-  <section id="ai">
-    <div class="reveal">
-      <p class="section-eyebrow">Artificial Intelligence</p>
-      <h2>AI as a Creative &amp; Technical Tool</h2>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">@the.deep_unknown<br>Instagram Grid / Profile View</p></div>
+      <div class="img-frame-caption">The "good" ending — dark &amp; ominous, leads to freedom</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <p>
-        AI was woven throughout every layer of the project — from initial ideation and writing assistance to code generation and asset creation. The team used AI tools purposefully and transparently, documenting each use case in their citations.
-      </p>
+  <!-- ▸ Three key Instagram posts -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Post 1<br>Exposition</p></div>
+      <div class="img-frame-caption">"looks peaceful... right?"</div>
     </div>
-
-    <div class="ai-grid reveal">
-      <div class="ai-tool">
-        <div class="ai-tool-name">Claude (Anthropic)</div>
-        <ul>
-          <li>Landing page HTML/CSS — 12+ iterations</li>
-          <li>AR experience link integration</li>
-          <li>Custom map fragment counter script</li>
-          <li>QR code generation</li>
-          <li>General Zappar troubleshooting</li>
-        </ul>
-      </div>
-      <div class="ai-tool">
-        <div class="ai-tool-name">ChatGPT (OpenAI)</div>
-        <ul>
-          <li>Brainstorming Instagram page ideas</li>
-          <li>Structured scene breakdown</li>
-          <li>Hint writing for map fragments</li>
-          <li>Grammar &amp; writing refinement</li>
-        </ul>
-      </div>
-      <div class="ai-tool">
-        <div class="ai-tool-name">Adobe Illustrator AI</div>
-        <ul>
-          <li>Text to Vector Graphic generation</li>
-          <li>Trees, NPCs, rocks — all major assets</li>
-          <li>Dark vs. vibrant theme exploration</li>
-        </ul>
-      </div>
-      <div class="ai-tool">
-        <div class="ai-tool-name">Google Gemini</div>
-        <ul>
-          <li>Digital version of artifact logo</li>
-          <li>Viewbook cover image recreation</li>
-          <li>Learning Commons poster illustrations</li>
-          <li>Mattercraft troubleshooting support</li>
-        </ul>
-      </div>
-      <div class="ai-tool">
-        <div class="ai-tool-name">Mattercraft AI</div>
-        <ul>
-          <li>Image tracking troubleshooting</li>
-          <li>Behavior debugging support</li>
-        </ul>
-      </div>
-      <div class="ai-tool">
-        <div class="ai-tool-name">Lens Studio AI</div>
-        <ul>
-          <li>Early interaction prototyping test</li>
-          <li>Platform evaluation (deemed too limited)</li>
-        </ul>
-      </div>
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Post 3<br>Climax</p></div>
+      <div class="img-frame-caption">Owl silhouette reveal</div>
     </div>
-
-    <div class="reveal">
-      <p>
-        What's notable about the team's AI usage is how <strong>purposeful</strong> it was. Each tool was chosen for its strengths: Claude for coding and scripting (cited as better than ChatGPT for code), ChatGPT for ideation and writing, Adobe Illustrator AI for rapid visual asset iteration. AI accelerated production without replacing the team's creative direction — the concepts, narrative decisions, and quality judgment remained human.
-      </p>
+    <div class="img-frame img-frame--tall">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Post 5<br>Denouement</p></div>
+      <div class="img-frame-caption">"you didn't choose wrong"</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ── TEAM ── -->
-  <section id="team">
-    <div class="reveal">
-      <p class="section-eyebrow">Team Contributions</p>
-      <h2>Mythos Studio: Roles &amp; Responsibilities</h2>
+<!-- ════════ ASSETS ════════ -->
+<section id="assets">
+  <div class="reveal">
+    <p class="section-eyebrow">Asset Development</p>
+    <h2>Visual Language &amp; Physical Artifacts</h2>
+  </div>
+  <div class="reveal">
+    <p>All visual assets use a <strong>stylized 2D vector illustration style</strong> — warm-toned, storybook-inspired. This approach was chosen deliberately: it's cohesive across the AR and Instagram layers and doesn't require render infrastructure beyond scope.</p>
+  </div>
+
+  <!-- ▸ Full asset overview banner -->
+  <div class="reveal img-frame img-frame--banner">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <p class="img-frame-label">Complete Asset Library — All Compiled<br>Trees · NPCs · Owl · Rocks · Map Fragments · Final Map</p>
     </div>
+    <div class="img-frame-caption">All digital assets generated in Adobe Illustrator AI (Text to Vector Graphic)</div>
+  </div>
 
-    <div class="contrib-section reveal">
-      <div class="contrib-member">
-        <h4>Rayne — AR Lead &amp; Project Manager</h4>
-        <p>Led all AR development in Zappar/Mattercraft. Conducted MultiSet VPS campus scan (the entire route in a single session). Built the wayfinding system, map fragment counter (custom TypeScript with Claude), final map overlay, all four fragment locations, state/timeline management, mobile UI optimization, and asset placement in the final VPS scene. Also contributed narrative development including character updates and Arc 3. Tested Unity and Lens Studio during platform evaluation. Contributed route planning for the campus scavenger hunt.</p>
-      </div>
-      <div class="contrib-member">
-        <h4>Rianna — Digital Media &amp; Asset Lead</h4>
-        <p>Owned both Instagram accounts end-to-end — creation, content strategy, five-post narrative arcs for each account, story highlight video for The Forest Path. Led asset creation in Adobe Illustrator for trees, NPCs, rocks, and map fragments. Managed mood boards for both Instagram identities. Developed the user persona (Maya, 24). Contributed narrative structuring including the concept overview and audience definition. Updated the landing page from Project 2 to integrate the AR link.</p>
-      </div>
-      <div class="contrib-member">
-        <h4>Livia — AR Implementation &amp; Physical Production</h4>
-        <p>Implemented image tracking in Mattercraft — created the behavior, ActiveState, and animation so text appears when a physical artifact is viewed through the camera. Designed all three physical artifacts (brochure, plant marker, poster) with the Dasos owl logo. Created the artifact logo (hand-drawn, Gemini-digitized, Illustrator-refined). Evaluated Unity (Vuforia) and Snap Lens Studio during platform research. Contributed theme and structure documentation, including narrative themes and experience structure slides.</p>
-      </div>
+  <!-- ▸ Individual asset types -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Tree Assets<br>Multiple variants</p></div>
+      <div class="img-frame-caption">Stylized vector trees</div>
     </div>
-
-    <div class="ornament reveal">· · ·</div>
-  </section>
-
-  <!-- ── REFLECTION ── -->
-  <section id="reflection">
-    <div class="reveal">
-      <p class="section-eyebrow">Process Reflection</p>
-      <h2>What We Learned</h2>
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">NPC Assets<br>Backs-facing figures</p></div>
+      <div class="img-frame-caption">Conformity characters</div>
     </div>
-
-    <div class="reflection-box reveal">
-      <p>
-        This project was the most technically ambitious work the team had undertaken. Building a location-based AR experience from scratch — with no prior ZapWorks/Mattercraft experience, across an unfamiliar platform that was actively changing and deprecating tutorials — required constant adaptation.
-      </p>
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Rock Assets<br>Terrain variation</p></div>
+      <div class="img-frame-caption">Environment detail</div>
     </div>
+  </div>
 
-    <div class="reveal">
-      <h3>On Platform Research</h3>
-      <p>
-        Testing Unity, Lens Studio, and two VPS providers before committing to MultiSet cost real time, but paid off. The team avoided building on a platform that would have bottlenecked the experience — Immersal's messy scans and floor-clipping objects would have undermined the immersive quality entirely.
-      </p>
-
-      <h3>On Iteration</h3>
-      <p>
-        The landing page's twelve-plus Claude iterations exemplify the team's iterative approach. Rather than treating the first acceptable result as done, they kept refining — addressing specific mobile formatting issues, refining the colour temperature of the tree trunks, improving depth cues. This discipline carried into the AR layer: UI elements were tested across multiple phone sizes before the experience was finalized.
-      </p>
-
-      <h3>On Narrative Risk</h3>
-      <p>
-        The decision to invert the owl from guide to manipulator was a significant narrative risk taken late in production. It complicated the Instagram content strategy and required revisiting character documentation — but the result is a much more philosophically coherent experience. The bait-and-switch is now the project's strongest idea.
-      </p>
-
-      <h3>On AI Integration</h3>
-      <p>
-        The team's use of AI tools demonstrates both the power and the limits of AI-assisted creative work. Claude helped unblock coding challenges that would have taken days to solve manually. Adobe Illustrator's AI enabled rapid asset prototyping across different visual themes. But the team's own creative judgment — choosing the stylized vector style, revising the owl's role, writing five emotionally distinct Instagram posts per path — was irreplaceable. AI accelerated execution; the team directed everything meaningful.
-      </p>
-
-      <h3>On Risk Management</h3>
-      <p>
-        The QR code incident — where a paid QR service was unwittingly used, rendering the code inactive — was caught in time and resolved by generating a new QR code with Claude. This kind of small disaster during production is exactly what risk assessment prepares teams to handle without panic. The team recovered quickly and without losing significant momentum.
-      </p>
+  <!-- ▸ Map fragments + final map -->
+  <div class="reveal img-row img-row--1-2">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">4 Map Fragment Pieces</p></div>
+      <div class="img-frame-caption">Collectible fragments</div>
     </div>
-
-    <div class="card-grid reveal">
-      <div class="card">
-        <h4>Learning Outcomes Addressed</h4>
-        <p>Comprehensive interactive narrative proposal (LO 1), content for varied contexts (LO 6), unique perspectives and innovation (LO 7), personal practice situating (LO 8), group contribution evaluation (LO 9).</p>
-      </div>
-      <div class="card">
-        <h4>Tools Mastered</h4>
-        <p>Zappar/Mattercraft, MultiSet VPS, TypeScript behavior scripting, Adobe Illustrator AI, GitHub Pages hosting, Instagram as narrative platform.</p>
-      </div>
-      <div class="card">
-        <h4>What We'd Do Differently</h4>
-        <p>Begin VPS scanning earlier to allow more iteration time. Test physical artifacts in situ sooner. Document process screenshots more consistently from Week 1 for richer case study assets.</p>
-      </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Final Map Asset<br>Skulls vs. Flowers — contrasting path symbols</p></div>
+      <div class="img-frame-caption">Assembled map — the choice</div>
     </div>
-  </section>
+  </div>
+
+  <div class="reveal">
+    <h3>Physical Artifacts</h3>
+    <p>Three physical artifacts placed around campus — each blending into the environment while carrying the consistent Dasos owl logo. Image tracking lets Zappar detect them and trigger AR overlays.</p>
+  </div>
+
+  <!-- ▸ Three artifacts -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Artifact 1<br>SCAET Viewbook Brochure</p></div>
+      <div class="img-frame-caption">Mimics official Sheridan viewbook</div>
+    </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Artifact 2<br>Library Plant Marker — "Dasos"</p></div>
+      <div class="img-frame-caption">Greek for "forest"</div>
+    </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Artifact 3<br>Learning Commons Poster</p></div>
+      <div class="img-frame-caption">Blends with campus advertising</div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <h3>Artifact Logo (Livia)</h3>
+    <p>Designed to represent the owl working for the forest — almost like a surveillance camera. Feathers and leaves show the connection between the two entities. Hand-drawn, digitized with Gemini AI, refined in Adobe Illustrator.</p>
+  </div>
+
+  <!-- ▸ Logo sketch vs final -->
+  <div class="reveal img-row img-row--2">
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Owl Logo — Hand-drawn Sketch<br>Livia's original drawing</p></div>
+      <div class="img-frame-caption">Original hand-drawn version</div>
+    </div>
+    <div class="img-frame img-frame--square">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Owl Logo — Final Digital Version<br>Gemini-digitized · Illustrator-refined</p></div>
+      <div class="img-frame-caption">Final Dasos logo on all artifacts</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ AI AS TOOLS ════════ -->
+<section id="ai">
+  <div class="reveal">
+    <p class="section-eyebrow">Artificial Intelligence</p>
+    <h2>AI as a Creative &amp; Technical Tool</h2>
+  </div>
+  <div class="reveal">
+    <p>AI was woven throughout every layer of the project — from initial ideation and writing assistance to code generation and asset creation. The team used AI tools purposefully and transparently, documenting each use case in their citations.</p>
+  </div>
+
+  <!-- ▸ Claude conversation screenshot -->
+  <div class="reveal img-frame img-frame--wide">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <p class="img-frame-label">Claude Workflow Screenshot<br>Landing page iteration conversation or custom script generation</p>
+    </div>
+    <div class="img-frame-caption">12+ landing page iterations co-developed with Claude (Anthropic)</div>
+  </div>
+
+  <div class="ai-grid reveal">
+    <div class="ai-tool"><div class="ai-tool-name">Claude (Anthropic)</div><ul><li>Landing page — 12+ iterations</li><li>AR experience link integration</li><li>Map fragment counter script</li><li>QR code generation</li><li>Zappar troubleshooting</li></ul></div>
+    <div class="ai-tool"><div class="ai-tool-name">ChatGPT (OpenAI)</div><ul><li>Instagram page brainstorming</li><li>Structured scene breakdown</li><li>Hint writing for fragments</li><li>Grammar &amp; writing refinement</li></ul></div>
+    <div class="ai-tool"><div class="ai-tool-name">Adobe Illustrator AI</div><ul><li>Text to Vector Graphic</li><li>Trees, NPCs, rocks — all assets</li><li>Dark vs. vibrant theme test</li></ul></div>
+    <div class="ai-tool"><div class="ai-tool-name">Google Gemini</div><ul><li>Artifact logo digitization</li><li>Viewbook cover recreation</li><li>Learning Commons illustrations</li><li>Mattercraft troubleshooting</li></ul></div>
+    <div class="ai-tool"><div class="ai-tool-name">Mattercraft AI</div><ul><li>Image tracking debugging</li><li>Behavior support</li></ul></div>
+    <div class="ai-tool"><div class="ai-tool-name">Lens Studio AI</div><ul><li>Early prototype test</li><li>Platform evaluation</li></ul></div>
+  </div>
+
+  <!-- ▸ Illustrator AI + code screenshot -->
+  <div class="reveal img-row img-row--2">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Adobe Illustrator — Text to Vector<br>Dark vs. vibrant theme comparison</p></div>
+      <div class="img-frame-caption">AI-generated asset theme exploration</div>
+    </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Custom TypeScript Script<br>Map fragment counter — Claude-generated code</p></div>
+      <div class="img-frame-caption">Fragment collection logic in Mattercraft</div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <p>What's notable about the team's AI usage is how <strong>purposeful</strong> it was. Each tool was chosen for its strengths — Claude for coding, ChatGPT for ideation, Adobe Illustrator AI for rapid visual iteration. AI accelerated execution; the team directed everything meaningful.</p>
+  </div>
+</section>
+
+<!-- ════════ TEAM ════════ -->
+<section id="team">
+  <div class="reveal">
+    <p class="section-eyebrow">Team Contributions</p>
+    <h2>Mythos Studio: Roles &amp; Responsibilities</h2>
+  </div>
+
+  <!-- ▸ Group photo / working shot -->
+  <div class="reveal img-frame img-frame--wide">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <p class="img-frame-label">Group Photo / Working Shot<br>In-class session, placing campus artifacts, or collaborative working moment</p>
+    </div>
+    <div class="img-frame-caption">Mythos Studio — Rayne, Rianna, Livia</div>
+  </div>
+
+  <div class="contrib-section reveal">
+    <div class="contrib-member"><h4>Rayne — AR Lead &amp; Project Manager</h4><p>Led all AR development in Zappar/Mattercraft. Conducted MultiSet VPS campus scan. Built the wayfinding system, map fragment counter (custom TypeScript with Claude), final map overlay, all four fragment locations, state/timeline management, mobile UI optimization, and asset placement in the final scene. Contributed narrative development including character updates and Arc 3, and route planning for the scavenger hunt.</p></div>
+    <div class="contrib-member"><h4>Rianna — Digital Media &amp; Asset Lead</h4><p>Owned both Instagram accounts end-to-end — creation, content strategy, five-post narrative arcs, story highlight video for The Forest Path. Led asset creation in Adobe Illustrator for trees, NPCs, rocks, and map fragments. Managed mood boards for both Instagram identities. Developed the user persona (Maya, 24). Updated the landing page from Project 2 to integrate the AR link.</p></div>
+    <div class="contrib-member"><h4>Livia — AR Implementation &amp; Physical Production</h4><p>Implemented image tracking in Mattercraft — created the behavior, ActiveState, and animation so text appears when a physical artifact is viewed through the camera. Designed all three physical artifacts with the Dasos owl logo. Created the artifact logo (hand-drawn, Gemini-digitized, Illustrator-refined). Evaluated Unity (Vuforia) and Snap Lens Studio during platform research.</p></div>
+  </div>
+
+  <!-- ▸ Individual working shots -->
+  <div class="reveal img-row img-row--3">
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Rayne<br>Mattercraft / VPS work</p></div>
+      <div class="img-frame-caption">AR development process</div>
+    </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Rianna<br>Illustrator / Instagram</p></div>
+      <div class="img-frame-caption">Digital media &amp; assets</div>
+    </div>
+    <div class="img-frame img-frame--medium">
+      <div class="img-frame-inner"><div class="img-frame-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><p class="img-frame-label">Livia<br>Artifact production</p></div>
+      <div class="img-frame-caption">Physical artifact &amp; logo design</div>
+    </div>
+  </div>
+
+  <div class="ornament reveal">· · ·</div>
+</section>
+
+<!-- ════════ REFLECTION ════════ -->
+<section id="reflection">
+  <div class="reveal">
+    <p class="section-eyebrow">Process Reflection</p>
+    <h2>What We Learned</h2>
+  </div>
+
+  <div class="reflection-box reveal">
+    <p>This project was the most technically ambitious work the team had undertaken. Building a location-based AR experience from scratch — with no prior ZapWorks/Mattercraft experience, across an unfamiliar platform actively deprecating its own tutorials — required constant adaptation.</p>
+  </div>
+
+  <div class="reveal">
+    <h3>On Platform Research</h3>
+    <p>Testing Unity, Lens Studio, and two VPS providers before committing to MultiSet cost real time, but paid off. Immersal's messy scans and floor-clipping objects would have undermined the experience's immersive quality entirely.</p>
+    <h3>On Iteration</h3>
+    <p>The landing page's twelve-plus Claude iterations exemplify the team's iterative approach — addressing specific mobile formatting issues, refining the colour temperature of tree trunks, improving depth cues. This discipline carried into the AR layer: UI elements were tested across multiple phone sizes before the experience was finalized.</p>
+    <h3>On Narrative Risk</h3>
+    <p>The decision to invert the owl from guide to manipulator was a significant risk taken late in production. It complicated the Instagram content strategy — but the result is a much more philosophically coherent experience. The bait-and-switch is now the project's strongest idea.</p>
+    <h3>On AI Integration</h3>
+    <p>AI accelerated execution — Claude unblocked coding challenges in minutes; Illustrator AI enabled rapid visual prototyping. But the team's creative judgment — the stylized vector style, the owl's revised role, five emotionally distinct posts per path — was irreplaceable. The team directed everything meaningful.</p>
+    <h3>On Risk Management</h3>
+    <p>The QR code incident — a paid service unwittingly used, rendering the code inactive — was resolved quickly by generating a replacement with Claude. Small disasters during production are exactly what risk assessment prepares teams to handle without losing momentum.</p>
+  </div>
+
+  <!-- ▸ Final experience in-situ photo -->
+  <div class="reveal img-frame img-frame--banner">
+    <div class="img-frame-inner">
+      <div class="img-frame-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#c8c4b0" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <p class="img-frame-label">Final Experience In Situ — User Testing on Campus<br>Photo or screen recording of someone completing the full walk</p>
+    </div>
+    <div class="img-frame-caption">Between Two Paths — live on Sheridan Trafalgar campus</div>
+  </div>
+
+  <div class="card-grid reveal">
+    <div class="card"><h4>Learning Outcomes Addressed</h4><p>Comprehensive interactive narrative proposal (LO 1), content for varied contexts (LO 6), unique perspectives &amp; innovation (LO 7), personal practice (LO 8), group contribution evaluation (LO 9).</p></div>
+    <div class="card"><h4>Tools Mastered</h4><p>Zappar/Mattercraft, MultiSet VPS, TypeScript behavior scripting, Adobe Illustrator AI, GitHub Pages hosting, Instagram as narrative platform.</p></div>
+    <div class="card"><h4>What We'd Do Differently</h4><p>Begin VPS scanning earlier to allow more iteration time. Test physical artifacts in situ sooner. Document process screenshots more consistently from Week 1.</p></div>
+  </div>
+</section>
 
 </main>
 
-<!-- ══════════════ FOOTER ══════════════ -->
 <footer>
   <div class="ornament" style="margin-bottom:1.5rem">⊷</div>
   <p><strong>Between Two Paths</strong></p>
   <p style="margin-top:0.5rem">Mythos Studio — Rayne, Rianna, Livia</p>
   <p style="margin-top:0.5rem">VDES34444 Interactive Narrative · Sheridan College · Winter 2026</p>
   <p style="margin-top:1.5rem; font-size:0.72rem; opacity:0.5;">
-    An AR interactive narrative inspired by Plato's Allegory of the Cave.
-    <br>Experience live at mercerri.github.io/betweenthepaths/
+    An AR interactive narrative inspired by Plato's Allegory of the Cave.<br>
+    Experience live at mercerri.github.io/betweenthepaths/
   </p>
 </footer>
 
 <script>
-  // Intersection Observer for reveal animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Stagger reveal children in card grids
-  document.querySelectorAll('.card-grid').forEach(grid => {
-    grid.querySelectorAll('.card').forEach((card, i) => {
-      card.style.transitionDelay = `${i * 0.08}s`;
-    });
-  });
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  document.querySelectorAll('.card-grid').forEach(g => { g.querySelectorAll('.card').forEach((c,i) => { c.style.transitionDelay = `${i*0.08}s`; }); });
 </script>
 </body>
 </html>
